@@ -1,0 +1,10 @@
+.git
+
+*.pyc
+*.pyo
+*.pyd
+
+.venv
+
+BUILD.md
+NOTES.md

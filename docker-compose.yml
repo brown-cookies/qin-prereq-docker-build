@@ -1,0 +1,29 @@
+name: mielle-docker-build-md
+services:
+    app:
+        build: .
+        ports:
+            - "8080:8000"
+        environment:
+            DB_HOST: db
+            DB_NAME: events
+            DB_USER: events
+            DB_PASSWORD: whosthegoat?mielle
+        depends_on:
+            db:
+                condition: service_healthy
+    db:
+        image: postgres:18
+        environment:
+            POSTGRES_DB: events
+            POSTGRES_USER: events
+            POSTGRES_PASSWORD: whosthegoat?mielle
+        volumes:
+            - mielledata:/var/lib/postgresql
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U events -d events"]
+            interval: 2s
+            timeout: 3s
+            retries: 20
+volumes:
+    mielledata:
